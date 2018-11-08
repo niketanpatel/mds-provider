@@ -36,7 +36,7 @@ def insert_status_changes_from(source_table, dest_table=mds.STATUS_CHANGES):
         event_type::event_types,
         event_type_reason::event_type_reasons,
         to_timestamp(event_time) AT TIME ZONE 'UTC',
-        event_location::JSON,
+        event_location::jsonb,
         battery_pct,
         associated_trips::UUID[]
     FROM "{source_table}"
@@ -78,7 +78,7 @@ def insert_trips_from(source_table, dest_table=mds.TRIPS):
         trip_id::UUID,
         trip_duration,
         trip_distance,
-        route::JSON,
+        route::jsonb,
         accuracy,
         to_timestamp(start_time) AT TIME ZONE 'UTC',
         to_timestamp(end_time) AT TIME ZONE 'UTC',
