@@ -7,6 +7,7 @@ import json
 import mds
 from mds.api.auth import OAuthClientCredentialsAuth
 from mds.providers import get_registry, Provider
+from urllib.parse import parse_qs
 
 
 class ProviderClient(OAuthClientCredentialsAuth):
@@ -110,6 +111,10 @@ class ProviderClient(OAuthClientCredentialsAuth):
             # get subsequent pages of data
             next_url = __next_url(this_page)
             while paging and next_url:
+                next_url_qs = parse_qs(next_url.split("?")[-1])
+                if int(next_url_qs['start_time'][0]) > int(params['end_time']):
+                    break
+
                 r = session.get(next_url)
 
                 if r.status_code is not 200:
