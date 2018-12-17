@@ -121,12 +121,7 @@ class ProviderClient(OAuthClientCredentialsAuth):
 
                 if __has_data(this_page):
                     results[provider].append(this_page)
-                    next_url = __next_url(this_page)
-
-                    if next_url and rate_limit:
-                        time.sleep(rate_limit)
-                else:
-                    break
+                next_url = __next_url(this_page)
 
         return results
 
