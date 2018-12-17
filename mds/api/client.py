@@ -120,9 +120,7 @@ class ProviderClient(OAuthClientCredentialsAuth):
 
                 if __has_data(this_page):
                     results[provider].append(this_page)
-                    next_url = __next_url(this_page)
-                else:
-                    break
+                next_url = __next_url(this_page)
 
         return results
 
