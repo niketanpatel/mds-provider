@@ -85,8 +85,14 @@ def read_data_file(src, record_type):
     else:
         payload = json.load(open(src, "r"))
 
-    data = payload["data"][record_type]
-    return payload["version"], pd.DataFrame.from_records(data)
+    if isinstance(payload, list):
+        data = []
+        for page in payload:
+            data.extend(page["data"][record_type])
+    else:
+        data = payload["data"][record_type]
+
+    return payload[0]["version"], pd.DataFrame.from_records(data)
 
 
 class CustomJsonEncoder(json.JSONEncoder):
