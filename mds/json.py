@@ -6,7 +6,7 @@ from datetime import datetime
 import fiona
 import json
 import os
-import pandas
+import pandas as pd
 from pathlib import Path
 import requests
 import shapely.geometry
@@ -78,13 +78,13 @@ def read_data_file(src, record_type):
 
     if isinstance(payload, list):
         data = []
-        for page in payload:
-            data.extend(page["data"][record_type])
-        
-        if not all(page["version"] == payload[0]["version"] for page in payload):
-            raise("Data file has different versions across its pages. All pages need to be the same version.")
-        
         version = payload[0]["version"]
+
+        for page in payload:
+            if page["version"] == version:
+                data.extend(page["data"][record_type])
+            else:
+                raise ValueError("Version mismatch detected.")
     else:
         data = payload["data"][record_type]
         version = payload["version"]
